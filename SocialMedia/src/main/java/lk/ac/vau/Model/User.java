@@ -1,98 +1,98 @@
 package lk.ac.vau.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @XmlRootElement
 public class User extends PrimaryKeyId<String> {
 	@Id
 	private String UserId;
-	private String EmailId;
+	private String Email;
 	private String FirstName;
-	private String LastName;
-	private int Age;
-	
-	@OneToMany(mappedBy="Owner")
-	private List<Post> posts;
-	@OneToMany(mappedBy="CommentedBy")
-	private List<Comment> comments;
-	
+	private String lastName;
+	private int age;
+	@Transient
+	private List<Link>links=new ArrayList<Link>();
+	@OneToMany(mappedBy = "Owner")
+	private List<Post>posts;
+	@OneToMany(mappedBy = "CommentedBy")
+	private List<Comment>comments;
 	public User() {
-		
-	}
 
-	public User(String userId, String emailId, String firstName, String lastName, int age, List<Post> posts,
+	}
+	public User(String userId, String email, String firstName, String lastName, int age, List<Post> posts,
 			List<Comment> comments) {
 		super();
 		UserId = userId;
-		EmailId = emailId;
+		Email = email;
 		FirstName = firstName;
-		LastName = lastName;
-		Age = age;
+		this.lastName = lastName;
+		this.age = age;
 		this.posts = posts;
 		this.comments = comments;
 	}
-
 	public String getUserId() {
 		return UserId;
 	}
-
 	public void setUserId(String userId) {
 		UserId = userId;
 	}
-
-	public String getEmailId() {
-		return EmailId;
+	public String getEmail() {
+		return Email;
 	}
-
-	public void setEmailId(String emailId) {
-		EmailId = emailId;
+	public void setEmail(String email) {
+		Email = email;
 	}
-
 	public String getFirstName() {
 		return FirstName;
 	}
-
 	public void setFirstName(String firstName) {
 		FirstName = firstName;
 	}
-
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
-
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
-
 	public int getAge() {
-		return Age;
+		return age;
 	}
-
 	public void setAge(int age) {
-		Age = age;
+		this.age = age;
 	}
-
+	@JsonIgnore
 	public List<Post> getPosts() {
 		return posts;
 	}
-
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-
+	@JsonIgnore
 	public List<Comment> getComments() {
 		return comments;
 	}
-
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-
+	public List<Link> getLinks() {
+		return links;
+	}
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
 	
+	public void addLink(String uri, String rel) {
+		Link link=new Link(uri,rel);
+		links.add(link);
+	}
 }
